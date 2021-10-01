@@ -7,9 +7,7 @@
 
 
     if(mysqli_num_rows($result) > 0)
-        /*while($fila = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            echo 'Key: '. $fila;
-        }
+        /*
         foreach ($result as $key => $value) {
             $fila = mysqli_fetch_array($result, MYSQLI_ASSOC);
             
@@ -30,4 +28,24 @@
             echo "<br>";
         }
 
+        $filaAsoc = mysqli_fetch_array($result,MYSQLI_ASSOC);
+        echo "<table border='1'>";
+        echo "<tr>";
+        foreach ($filaAsoc as $id => $valor) {
+            echo "<td>".$id."</td>";
+        }
+        echo '</tr>';
+        mysqli_data_seek($result,0);
+
+        while($fila = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+            echo '<tr>';
+            echo '<td>'. $fila["id"].'</td>';
+            echo '<td>'. $fila["nombre"].'</td>';
+            echo '<td>'. $fila["repite"].'</td>';
+            echo '</tr>';
+        }
+
 ?>
+
+//Introducir un numero de alumno y que muestre la info del mismo 
+//
