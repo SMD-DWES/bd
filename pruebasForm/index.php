@@ -36,14 +36,49 @@
         } else {
             $conexion = mysqli_connect("localhost","root","","bd_procedimientos");
 
+            //Elimino espacios en blanco antes de pasarlo al SQL, pero solo elimina el del
+            //principio y final
+            $idAlu = trim($_POST["idAlu"]);
+            $nombreAlu = trim($_POST["nombreAlu"]);
+
+            $nombre = "";
+            $apellido = "";
+
+            //Quitar espacios en blanco del medio, utiliza dos variables, nombre y apellido
+            $lenght = strlen($nombreAlu);
+            $i = 0;
+            $hayEspacio = false;
+            while($i < $lenght) {
+                if($nombreAlu[$i] == ' '){
+                    $nombreAlu[$i++];
+                    $hayEspacio = true;
+                }
+                if($hayEspacio){
+                    $apellido .= $nombreAlu[$i];
+                } else 
+                    $nombre .= $nombreAlu[$i];
+
+                $i++;
+            }
+
+            //Elimino espacios al principio y al final.
+            $nombre = trim($nombre);
+            $apellido = trim($apellido);
+
+            $nombreFull = $nombre . " " . $apellido;
+            //echo "Nombre: ".$nombre . " <br>Apellido: ".$apellido;
+
+
             //Si alguno de los dos campos NO esta vacío usará el sql especificado.
             if(!empty($_POST["idAlu"]))
-                $sql = 'SELECT * FROM alumnos WHERE id="'.$_POST["idAlu"].'"';
+                $sql = 'SELECT * FROM alumnos WHERE id="'.$idAlu.'"';
             if(!empty($_POST["nombreAlu"]))
-                $sql = 'SELECT * FROM alumnos WHERE nombre LIKE "'.$_POST["nombreAlu"].'%"';
+                //$sql = 'SELECT * FROM alumnos WHERE nombre LIKE "'.$nombreAlu.'%"';
+                $sql = 'SELECT * FROM alumnos WHERE nombre LIKE "'.trim($nombreFull).'%"';
 
             //Si el query es correcto devuelve un objeto de tipo mysqli_result, en caso contrario, return.
             $query = mysqli_query($conexion,$sql);
+
             
             if(mysqli_num_rows($query)>0) {
 
