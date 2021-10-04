@@ -1,5 +1,7 @@
 CREATE DATABASE bd_procedimientos;
 
+USE bd_procedimientos;
+
 CREATE TABLE alumnos(
     id tinyint,
     nombre varchar(85) NOT NULL,
