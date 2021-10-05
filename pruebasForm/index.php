@@ -39,13 +39,16 @@
 
             //Elimino espacios en blanco antes de pasarlo al SQL, pero solo elimina el del
             //principio y final
+            //[OBSOLETO]
             $idAlu = trim($_POST["idAlu"]);
             $nombreAlu = trim($_POST["nombreAlu"]);
 
             $nombre = "";
             $apellido = "";
 
-            //Quitar espacios en blanco del medio, utiliza dos variables, nombre y apellido
+            //Utiliza dos vars (nombre y apellido), si encuentra un espacio en blanco en medio
+            //deja de escribir en nombre y escribe en la variable de apellido
+            //Esto habría que actualizarlo a ARRAY's para poder poner más de un apellido.
             $lenght = strlen($nombreAlu);
             $i = 0;
             $hayEspacio = false;
@@ -62,15 +65,9 @@
                 $i++;
             }
 
-            //Elimino espacios al principio y al final.
-            $nombre = trim($nombre);
-            $apellido = trim($apellido);
+            $nombreFull = trim($nombre) . " " . trim($apellido);
 
-            $nombreFull = $nombre . " " . $apellido;
-            //echo "Nombre: ".$nombre . " <br>Apellido: ".$apellido;
-
-
-            //Si alguno de los dos campos NO esta vacío usará el sql especificado.
+            //Si alguno de los dos campos NO esta vacío usará el sql especificado. (Esto es susceptible a SQL INJECTION)
             if(!empty($_POST["idAlu"]))
                 $sql = 'SELECT * FROM alumnos WHERE id="'.$idAlu.'"';
             if(!empty($_POST["nombreAlu"]))
