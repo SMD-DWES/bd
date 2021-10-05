@@ -46,6 +46,8 @@
             $nombre = "";
             $apellido = "";
 
+            $nombres = array();
+
             //Utiliza dos vars (nombre y apellido), si encuentra un espacio en blanco en medio
             //deja de escribir en nombre y escribe en la variable de apellido
             //Esto habría que actualizarlo a ARRAY's para poder poner más de un apellido.
@@ -59,11 +61,14 @@
                 }
                 if($hayEspacio){
                     $apellido .= $nombreAlu[$i];
-                } else 
+                } else
                     $nombre .= $nombreAlu[$i];
 
                 $i++;
             }
+
+            array_push($nombres,$nombre,$apellido);
+            print_r($nombres);
 
             $nombreFull = trim($nombre) . " " . trim($apellido);
 
