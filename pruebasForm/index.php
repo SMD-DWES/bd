@@ -34,7 +34,8 @@
         if(!empty($_POST["idAlu"]) && !empty($_POST["nombreAlu"])) {
             echo '<br /><b>ERROR, no puedes buscar por los dos campos a la vez, elige uno de los dos.</b>';
         } else {
-            $conexion = mysqli_connect("localhost","root","","bd_procedimientos");
+            $conexion = new mysqli("localhost","root","","bd_procedimientos");
+            
 
             //Elimino espacios en blanco antes de pasarlo al SQL, pero solo elimina el del
             //principio y final
@@ -73,16 +74,15 @@
             if(!empty($_POST["idAlu"]))
                 $sql = 'SELECT * FROM alumnos WHERE id="'.$idAlu.'"';
             if(!empty($_POST["nombreAlu"]))
-                //$sql = 'SELECT * FROM alumnos WHERE nombre LIKE "'.$nombreAlu.'%"';
                 $sql = 'SELECT * FROM alumnos WHERE nombre LIKE "'.trim($nombreFull).'%"';
 
             //Si el query es correcto devuelve un objeto de tipo mysqli_result, en caso contrario, return.
-            $query = mysqli_query($conexion,$sql);
+            $query = $conexion->query($sql);
 
             
-            if(mysqli_num_rows($query)>0) {
+            if($query->num_rows>0) {
 
-                while($fila = mysqli_fetch_array($query,MYSQLI_ASSOC)){
+                while($fila = $query->fetch_array(MYSQLI_ASSOC)){
 
                     echo '<br>ID: <b>'.$fila["id"].'</b><br />';
                     echo 'Nombre: <b>'.$fila["nombre"].'</b><br />';
@@ -94,7 +94,7 @@
             } else {
                 echo '<h3>Error, dato no encontrado.</h3>';
             }
-            mysqli_close($conexion);
+            $conexion->close();
         }
     }
 
