@@ -25,18 +25,33 @@
 <?php
     //print_r($_POST);
 
-    if(isset($_POST["enviar"])) {
+    class Formulario {
+        function __construct() {
 
-        //Si ambos campos estan vacios, entonces no se hace nada.
-        if(empty($_POST["idAlu"]) && empty($_POST["nombreAlu"]))
-            return;
+            $this->comprobaciones();
 
-        if(!empty($_POST["idAlu"]) && !empty($_POST["nombreAlu"])) {
-            echo '<br /><b>ERROR, no puedes buscar por los dos campos a la vez, elige uno de los dos.</b>';
-        } else {
+        }
+
+        function comprobaciones() {
+
+            if(isset($_POST["enviar"])) {
+
+                //Si ambos campos estan vacios, entonces no se hace nada.
+                if(empty($_POST["idAlu"]) && empty($_POST["nombreAlu"]))
+                    return;
+
+                if(!empty($_POST["idAlu"]) && !empty($_POST["nombreAlu"])) {
+                    echo '<br /><b>ERROR, no puedes buscar por los dos campos a la vez, elige uno de los dos.</b>';
+                } else {
+                    $this->busqueda();
+                }
+            }
+        }
+
+        function busqueda() {
+
             $conexion = new mysqli("localhost","root","","bd_procedimientos");
-            
-
+                
             //Elimino espacios en blanco antes de pasarlo al SQL, pero solo elimina el del
             //principio y final
             //[OBSOLETO]
@@ -97,8 +112,10 @@
                 echo '<h3>Error, dato no encontrado.</h3>';
             }
             $conexion->close();
+            
         }
     }
 
+    new Formulario();
 
 ?>
